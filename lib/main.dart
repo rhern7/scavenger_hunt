@@ -39,9 +39,8 @@ class ScavengerHomePage extends StatefulWidget {
   @override
   State<ScavengerHomePage> createState() => _ScavengerHomePageState();
 }
-
+//replace with real pictures and hints once you have pictures
 class _ScavengerHomePageState extends State<ScavengerHomePage> {
-  // Sample data model for items in the scavenger hunt. Need to replace later with actual pictures
   final List<ScavengerItem> items = [
     ScavengerItem(
       hint: 'Tall building with a huge clock on top!',
@@ -64,10 +63,40 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: Text(
-          'Data model added, next step is to display it!',
-          style: TextStyle(fontSize: 18),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          itemCount: items.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // 2 columns
+            childAspectRatio: 1.0, // make it square-ish
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                    offset: Offset(2, 2),
+                  )
+                ],
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: Text(
+                  item.hint,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
