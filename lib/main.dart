@@ -41,7 +41,7 @@ class ScavengerHomePage extends StatefulWidget {
 }
 
 class _ScavengerHomePageState extends State<ScavengerHomePage> {
-  // Sample data model for items in the scavenger hunt
+  // Sample data model for items in the scavenger hunt. Need to replace later with actual pictures
   final List<ScavengerItem> items = [
     ScavengerItem(
       hint: 'Tall building with a huge clock on top!',
