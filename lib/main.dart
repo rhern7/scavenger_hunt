@@ -53,39 +53,38 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
       hint:
           'Usually the first room you see! It was recently being used as an oversized classroom that made everyone uncomfortable.',
       imagePath: 'assets/images/commons.webp',
-      answerDetail: 'This is the Commons, a versatile space often repurposed!',
+      answerDetail: 'The Commons!',
     ),
     ScavengerItem(
-      hint:
-          'The only thing that feeds the engineering students. There is no other food available.',
+      hint: 'The only thing that feeds the engineering students. There is no other food available.',
       imagePath: 'assets/images/panera.webp',
-      answerDetail: 'This is Panera Bread, fueling all those busy engineers!',
+      answerDetail: 'Panera. Bring back the energy drinks',
     ),
     ScavengerItem(
       hint:
           'The other room you may see when walking in to PFT. Usually too crowded and used to display sad engineering students to campus tours.',
       imagePath: 'assets/images/atrium.webp',
       answerDetail:
-          'This is the Atrium. Looks great, but it’s always packed with stressed students!',
+          'The Atrium. Why is it always so hot here',
     ),
     ScavengerItem(
       hint:
           'The most uncomfortable place to sit in the whole building. Seriously, why do people sit here? Just solid wood.',
       imagePath: 'assets/images/wood stairs.jpg',
-      answerDetail: 'These are the wooden stairs. Ouch!',
+      answerDetail: 'The weird wooden stairs',
     ),
     ScavengerItem(
       hint:
           'The most prized find in all of PFT. Most people spend at least 30 minutes wandering to find one.',
       imagePath: 'assets/images/seats.webp',
-      answerDetail: 'Those elusive seats – good luck finding a free one!',
+      answerDetail: 'A chair. I just want to sit down man',
     ),
     ScavengerItem(
       hint:
           'The spot where one of the biggest events in PFT history happened. It happens to be right in front of our classroom.',
       imagePath: 'assets/images/flood.webp',
       answerDetail:
-          'This area was flooded once, turning the hallway into a mini-river!',
+          'The great flood',
     ),
   ];
 
