@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Campus Scavenger Hunt',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
@@ -70,6 +70,46 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     }
   }
 
+  void _onRevealAnswer(ScavengerItem item) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 32,
+            vertical: 32,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Answer',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16),
+                Image.asset(
+                  item.imagePath,
+                  fit: BoxFit.cover,
+                  height: 200,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildItemTile(ScavengerItem item) {
     return Stack(
       children: [
@@ -99,14 +139,23 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () => _onMarkFound(item),
-                child: Text(item.found ? 'Unmark' : 'Mark Found'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => _onMarkFound(item),
+                    child: Text(item.found ? 'Unmark' : 'Mark Found'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => _onRevealAnswer(item),
+                    child: const Text('Reveal'),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-        // Check mark overlay in top-right corner
+        // Check mark overlay
         Positioned(
           top: 8,
           right: 8,
