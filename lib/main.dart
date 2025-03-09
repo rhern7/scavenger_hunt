@@ -39,35 +39,63 @@ class ScavengerHomePage extends StatefulWidget {
   @override
   State<ScavengerHomePage> createState() => _ScavengerHomePageState();
 }
-//Add real pictures and hints
+
 class _ScavengerHomePageState extends State<ScavengerHomePage> {
   final List<ScavengerItem> items = [
     ScavengerItem(
-      hint: 'Tall building with a huge clock on top!',
-      imagePath: 'assets/images/clocktower.jpg',
+      hint: 'Usually the first room you see! It was recently being used as an oversiszed classroom that made everyone uncomfortable.',
+      imagePath: 'assets/images/commons.webp',
     ),
     ScavengerItem(
-      hint: 'A place where students gather to eat and chat.',
-      imagePath: 'assets/images/cafeteria.jpg',
+      hint: 'The only thing that feeds the engineering students. There is no other food available.',
+      imagePath: 'assets/images/panera.webp',
     ),
     ScavengerItem(
-      hint: 'Historic library known for its ancient manuscripts.',
-      imagePath: 'assets/images/library.jpg',
+      hint: 'The other room you may see when walking in to PFT. Usually too crowded and used to display sad engeineering students to campus tours.',
+      imagePath: 'assets/images/atrium.webp',
     ),
     ScavengerItem(
-      hint: 'Find the large sports stadium for big events.',
-      imagePath: 'assets/images/stadium.jpg',
+      hint: 'The most uncomfotable place to sit in the whole building. Seriously why do people sit here. Just solid wood.',
+      imagePath: 'assets/images/wood stairs.jpg',
     ),
     ScavengerItem(
-      hint: 'Where you can burn off energy on treadmills and weights.',
-      imagePath: 'assets/images/gym.jpg',
+      hint: 'The most prized find in the all of PFT. Most people spend at least 30 minutes wandering to find one.',
+      imagePath: 'assets/images/seats.webp',
     ),
     ScavengerItem(
-      hint: 'Students rest, live, and hang out here.',
-      imagePath: 'assets/images/dorms.jpg',
+      hint: 'The spot where one of the biggest events in PFT history happenend. It happens to be right in front of our classroom.',
+      imagePath: 'assets/images/flood.webp',
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    // Show the welcome message once the app starts.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showWelcomeDialog();
+    });
+  }
+
+  void _showWelcomeDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Welcome to the Scavenger Hunt!'),
+        content: const Text(
+          'Make it to the end to win nothing!',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Called when the user toggles "Mark Found" on an item.
   void _onMarkFound(ScavengerItem item) {
     setState(() {
       item.found = !item.found;
@@ -82,6 +110,7 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     }
   }
 
+  /// Called when the user taps "Reveal," showing a dialog with the item's image.
   void _onRevealAnswer(ScavengerItem item) {
     showDialog(
       context: context,
@@ -122,72 +151,55 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     );
   }
 
-  Widget _buildItemTile(ScavengerItem item) {
-    return Stack(
-      children: [
-        // Main box
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 4,
-                offset: Offset(2, 2),
-              )
-            ],
-          ),
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    item.hint,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ),
+  /// Builds a single "tile" in the grid.
+  Widget _buildItemTile(ScavengerItem item, bool isActive) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(2, 2),
+          )
+        ],
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Center(
+              child: Text(
+                item.hint,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => _onMarkFound(item),
-                    child: Text(item.found ? 'Unmark' : 'Mark Found'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _onRevealAnswer(item),
-                    child: const Text('Reveal'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        // Check mark overlay
-        Positioned(
-          top: 8,
-          right: 8,
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: item.found ? 1.0 : 0.0,
-            child: const Icon(
-              Icons.check_circle,
-              size: 30,
-              color: Colors.green,
             ),
           ),
-        ),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                // If not active, disable button
+                onPressed: isActive ? () => _onMarkFound(item) : null,
+                child: Text(item.found ? 'Unmark' : 'Mark Found'),
+              ),
+              ElevatedButton(
+                // If not active, disable reveal
+                onPressed: isActive ? () => _onRevealAnswer(item) : null,
+                child: const Text('Reveal'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // CrossAxisCount = 3 -> Smaller squares
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -198,13 +210,44 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
         child: GridView.builder(
           itemCount: items.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,      // 3 columns = smaller squares
+            crossAxisCount: 3,      // 3 columns for smaller squares
             childAspectRatio: 1.0,  // keep them square-ish
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
           itemBuilder: (context, index) {
-            return _buildItemTile(items[index]);
+            // Decide if this item is active:
+            //  - The first item (index 0) is always visible
+            //  - Any other item is visible only if the previous item is found
+            final bool isActive = (index == 0) || items[index - 1].found;
+
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              opacity: isActive ? 1.0 : 0.0,
+              // Also ignore taps when inactive
+              child: AbsorbPointer(
+                absorbing: !isActive,
+                child: Stack(
+                  children: [
+                    _buildItemTile(items[index], isActive),
+                    // Check mark overlay
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: items[index].found ? 1.0 : 0.0,
+                        child: const Icon(
+                          Icons.check_circle,
+                          size: 30,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         ),
       ),
