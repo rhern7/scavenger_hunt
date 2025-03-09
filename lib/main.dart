@@ -19,14 +19,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// A single scavenger-hunt item containing:
+///  - hint: a riddle or clue about the location
+///  - imagePath: path to its reveal image
+///  - answerDetail: a short message displayed when revealed
+///  - found: whether the item has been marked as found
 class ScavengerItem {
   final String hint;
   final String imagePath;
+  final String answerDetail;
   bool found;
 
   ScavengerItem({
     required this.hint,
     required this.imagePath,
+    required this.answerDetail,
     this.found = false,
   });
 }
@@ -43,28 +50,41 @@ class ScavengerHomePage extends StatefulWidget {
 class _ScavengerHomePageState extends State<ScavengerHomePage> {
   final List<ScavengerItem> items = [
     ScavengerItem(
-      hint: 'Usually the first room you see! It was recently being used as an oversiszed classroom that made everyone uncomfortable.',
+      hint:
+          'Usually the first room you see! It was recently being used as an oversized classroom that made everyone uncomfortable.',
       imagePath: 'assets/images/commons.webp',
+      answerDetail: 'The Commons!',
     ),
     ScavengerItem(
       hint: 'The only thing that feeds the engineering students. There is no other food available.',
       imagePath: 'assets/images/panera.webp',
+      answerDetail: 'Panera. Bring back the energy drinks',
     ),
     ScavengerItem(
-      hint: 'The other room you may see when walking in to PFT. Usually too crowded and used to display sad engeineering students to campus tours.',
+      hint:
+          'The other room you may see when walking in to PFT. Usually too crowded and used to display sad engineering students to campus tours.',
       imagePath: 'assets/images/atrium.webp',
+      answerDetail:
+          'The Atrium. Why is it always so hot here',
     ),
     ScavengerItem(
-      hint: 'The most uncomfotable place to sit in the whole building. Seriously why do people sit here. Just solid wood.',
+      hint:
+          'The most uncomfortable place to sit in the whole building. Seriously, why do people sit here? Just solid wood.',
       imagePath: 'assets/images/wood stairs.jpg',
+      answerDetail: 'The weird wooden stairs',
     ),
     ScavengerItem(
-      hint: 'The most prized find in the all of PFT. Most people spend at least 30 minutes wandering to find one.',
+      hint:
+          'The most prized find in all of PFT. Most people spend at least 30 minutes wandering to find one.',
       imagePath: 'assets/images/seats.webp',
+      answerDetail: 'A chair. I just want to sit down man',
     ),
     ScavengerItem(
-      hint: 'The spot where one of the biggest events in PFT history happenend. It happens to be right in front of our classroom.',
+      hint:
+          'The spot where one of the biggest events in PFT history happened. It happens to be right in front of our classroom.',
       imagePath: 'assets/images/flood.webp',
+      answerDetail:
+          'The great flood',
     ),
   ];
 
@@ -110,7 +130,8 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     }
   }
 
-  /// Called when the user taps "Reveal," showing a dialog with the item's image.
+  /// Called when the user taps "Reveal," showing a dialog with the item's image
+  /// and its unique message.
   void _onRevealAnswer(ScavengerItem item) {
     showDialog(
       context: context,
@@ -128,15 +149,25 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Make the word "Answer" bigger
                 Text(
                   'Answer',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
+                // Show the item image
                 Image.asset(
                   item.imagePath,
                   fit: BoxFit.cover,
                   height: 200,
+                ),
+                const SizedBox(height: 16),
+                // Unique message describing the answer
+                Text(
+                  item.answerDetail,
+                  style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
@@ -169,25 +200,25 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Make the tile hint bigger
           Expanded(
             child: Center(
               child: Text(
                 item.hint,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14),
+                style: const TextStyle(fontSize: 18),
               ),
             ),
           ),
+          // Buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                // If not active, disable button
                 onPressed: isActive ? () => _onMarkFound(item) : null,
                 child: Text(item.found ? 'Unmark' : 'Mark Found'),
               ),
               ElevatedButton(
-                // If not active, disable reveal
                 onPressed: isActive ? () => _onRevealAnswer(item) : null,
                 child: const Text('Reveal'),
               ),
@@ -210,8 +241,8 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
         child: GridView.builder(
           itemCount: items.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,      // 3 columns for smaller squares
-            childAspectRatio: 1.0,  // keep them square-ish
+            crossAxisCount: 3, // 3 columns for smaller squares
+            childAspectRatio: 1.0,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
