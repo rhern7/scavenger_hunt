@@ -19,6 +19,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class ScavengerItem {
+  final String hint;
+  final String imagePath;
+  bool found;
+
+  ScavengerItem({
+    required this.hint,
+    required this.imagePath,
+    this.found = false,
+  });
+}
+
 class ScavengerHomePage extends StatefulWidget {
   const ScavengerHomePage({super.key, required this.title});
 
@@ -29,7 +41,21 @@ class ScavengerHomePage extends StatefulWidget {
 }
 
 class _ScavengerHomePageState extends State<ScavengerHomePage> {
-  // For now, no state here.
+  // Sample data model for items in the scavenger hunt
+  final List<ScavengerItem> items = [
+    ScavengerItem(
+      hint: 'Tall building with a huge clock on top!',
+      imagePath: 'assets/images/clocktower.jpg',
+    ),
+    ScavengerItem(
+      hint: 'A place where students gather to eat and chat.',
+      imagePath: 'assets/images/cafeteria.jpg',
+    ),
+    ScavengerItem(
+      hint: 'Historic library known for its ancient manuscripts.',
+      imagePath: 'assets/images/library.jpg',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +66,7 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
       ),
       body: const Center(
         child: Text(
-          'Welcome to the Scavenger Hunt!',
+          'Data model added, next step is to display it!',
           style: TextStyle(fontSize: 18),
         ),
       ),
