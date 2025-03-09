@@ -39,7 +39,7 @@ class ScavengerHomePage extends StatefulWidget {
   @override
   State<ScavengerHomePage> createState() => _ScavengerHomePageState();
 }
-//replace with real pictures and hints
+//Add real pictures and hints
 class _ScavengerHomePageState extends State<ScavengerHomePage> {
   final List<ScavengerItem> items = [
     ScavengerItem(
@@ -53,6 +53,18 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     ScavengerItem(
       hint: 'Historic library known for its ancient manuscripts.',
       imagePath: 'assets/images/library.jpg',
+    ),
+    ScavengerItem(
+      hint: 'Find the large sports stadium for big events.',
+      imagePath: 'assets/images/stadium.jpg',
+    ),
+    ScavengerItem(
+      hint: 'Where you can burn off energy on treadmills and weights.',
+      imagePath: 'assets/images/gym.jpg',
+    ),
+    ScavengerItem(
+      hint: 'Students rest, live, and hang out here.',
+      imagePath: 'assets/images/dorms.jpg',
     ),
   ];
 
@@ -135,7 +147,7 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
                   child: Text(
                     item.hint,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ),
               ),
@@ -175,6 +187,7 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // CrossAxisCount = 3 -> Smaller squares
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -185,8 +198,8 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
         child: GridView.builder(
           itemCount: items.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.0,
+            crossAxisCount: 3,      // 3 columns = smaller squares
+            childAspectRatio: 1.0,  // keep them square-ish
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
