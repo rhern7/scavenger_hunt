@@ -53,38 +53,39 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
       hint:
           'Usually the first room you see! It was recently being used as an oversized classroom that made everyone uncomfortable.',
       imagePath: 'assets/images/commons.webp',
-      answerDetail: 'The Commons!',
+      answerDetail: 'This is the Commons, a versatile space often repurposed!',
     ),
     ScavengerItem(
-      hint: 'The only thing that feeds the engineering students. There is no other food available.',
+      hint:
+          'The only thing that feeds the engineering students. There is no other food available.',
       imagePath: 'assets/images/panera.webp',
-      answerDetail: 'Panera. Bring back the energy drinks',
+      answerDetail: 'This is Panera Bread, fueling all those busy engineers!',
     ),
     ScavengerItem(
       hint:
           'The other room you may see when walking in to PFT. Usually too crowded and used to display sad engineering students to campus tours.',
       imagePath: 'assets/images/atrium.webp',
       answerDetail:
-          'The Atrium. Why is it always so hot here',
+          'This is the Atrium. Looks great, but it’s always packed with stressed students!',
     ),
     ScavengerItem(
       hint:
           'The most uncomfortable place to sit in the whole building. Seriously, why do people sit here? Just solid wood.',
       imagePath: 'assets/images/wood stairs.jpg',
-      answerDetail: 'The weird wooden stairs',
+      answerDetail: 'These are the wooden stairs. Ouch!',
     ),
     ScavengerItem(
       hint:
           'The most prized find in all of PFT. Most people spend at least 30 minutes wandering to find one.',
       imagePath: 'assets/images/seats.webp',
-      answerDetail: 'A chair. I just want to sit down man',
+      answerDetail: 'Those elusive seats – good luck finding a free one!',
     ),
     ScavengerItem(
       hint:
           'The spot where one of the biggest events in PFT history happened. It happens to be right in front of our classroom.',
       imagePath: 'assets/images/flood.webp',
       answerDetail:
-          'The great flood',
+          'This area was flooded once, turning the hallway into a mini-river!',
     ),
   ];
 
@@ -118,15 +119,38 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
   /// Called when the user toggles "Mark Found" on an item.
   void _onMarkFound(ScavengerItem item) {
     setState(() {
+      // Toggle the found status
       item.found = !item.found;
     });
+
     if (item.found) {
+      // Minor celebratory feedback
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Found: "${item.hint}"'),
           duration: const Duration(seconds: 1),
         ),
       );
+
+      // Check if all items are found
+      if (items.every((element) => element.found)) {
+        // Show final message
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text('Good job!'),
+            content: const Text(
+              'You made it through the most important areas of PFT!',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
