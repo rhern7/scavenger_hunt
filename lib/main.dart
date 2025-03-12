@@ -9,12 +9,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Define an LSU-inspired color scheme.
+    final ColorScheme lsuColorScheme = const ColorScheme(
+      brightness: Brightness.light,
+      primary: Color(0xFF46166B),   // LSU Purple
+      onPrimary: Colors.white,
+      secondary: Color(0xFFFDB927), // LSU Gold
+      onSecondary: Colors.black,
+      error: Colors.red,
+      onError: Colors.white,
+      background: Colors.white,
+      onBackground: Colors.black,
+      surface: Colors.white,
+      onSurface: Colors.black,
+    );
+
     return MaterialApp(
-      title: 'Campus Scavenger Hunt',
+      title: 'LSU Campus Scavenger Hunt',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: lsuColorScheme,
+        // Optionally, you might set a fontFamily here if the LSU guide specifies one.
+        // fontFamily: 'Georgia', // example font
       ),
-      home: const ScavengerHomePage(title: 'Scavenger Home'),
+      home: const ScavengerHomePage(title: 'LSU Scavenger Home'),
     );
   }
 }
@@ -51,40 +68,38 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
   final List<ScavengerItem> items = [
     ScavengerItem(
       hint:
-          'Usually the first room you see! It was recently being used as an oversized classroom that made everyone uncomfortable.',
+          'Usually the first room you see! It was recently used as an oversized classroom that felt inviting.',
       imagePath: 'assets/images/commons.webp',
       answerDetail: 'The Commons!',
     ),
     ScavengerItem(
-      hint: 'The only thing that feeds the engineering students. There is no other food available.',
+      hint: 'The only spot that fuels our engineering Tigers. No other food can compare.',
       imagePath: 'assets/images/panera.webp',
-      answerDetail: 'Panera. Bring back the energy drinks',
+      answerDetail: 'Panera. A true LSU fuel stop!',
     ),
     ScavengerItem(
       hint:
-          'The other room you may see when walking in to PFT. Usually too crowded and used to display sad engineering students to campus tours.',
+          'Another space encountered when entering PFT. Often buzzing with LSU pride and campus life.',
       imagePath: 'assets/images/atrium.webp',
-      answerDetail:
-          'The Atrium. Why is it always so hot here',
+      answerDetail: 'The Atrium. A hub of energy!',
     ),
     ScavengerItem(
       hint:
-          'The most uncomfortable place to sit in the whole building. Seriously, why do people sit here? Just solid wood.',
+          'A classic area with a touch of tradition. Where every seat has a story.',
       imagePath: 'assets/images/wood stairs.jpg',
-      answerDetail: 'The weird wooden stairs',
+      answerDetail: 'The iconic wooden stairs',
     ),
     ScavengerItem(
       hint:
-          'The most prized find in all of PFT. Most people spend at least 30 minutes wandering to find one.',
+          'A coveted find in PFT—many spend minutes in search of this hidden treasure.',
       imagePath: 'assets/images/seats.webp',
-      answerDetail: 'A chair. I just want to sit down man',
+      answerDetail: 'A cherished seat. Time to relax!',
     ),
     ScavengerItem(
       hint:
-          'The spot where one of the biggest events in PFT history happened. It happens to be right in front of our classroom.',
+          'The site of a memorable campus moment, right in front of our classroom.',
       imagePath: 'assets/images/flood.webp',
-      answerDetail:
-          'The great flood',
+      answerDetail: 'A historic moment on LSU grounds',
     ),
   ];
 
@@ -101,14 +116,14 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Welcome to the Scavenger Hunt!'),
+        title: const Text('Welcome to the LSU Campus Scavenger Hunt!'),
         content: const Text(
-          'Make it to the end to win nothing!',
+          'Explore our beautiful campus and uncover hidden treasures!',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: const Text('Let\'s Go'),
           ),
         ],
       ),
@@ -118,7 +133,6 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
   /// Called when the user toggles "Mark Found" on an item.
   void _onMarkFound(ScavengerItem item) {
     setState(() {
-      // Toggle the found status
       item.found = !item.found;
     });
 
@@ -137,14 +151,14 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-            title: const Text('Good job!'),
+            title: const Text('Geaux Tigers!'),
             content: const Text(
-              'You made it through the most important areas of PFT!',
+              'You have discovered all the key areas of our LSU campus!',
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
+                child: const Text('Celebrate'),
               ),
             ],
           ),
@@ -257,7 +271,8 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // Use LSU Purple for the AppBar background.
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -270,31 +285,29 @@ class _ScavengerHomePageState extends State<ScavengerHomePage> {
             mainAxisSpacing: 8,
           ),
           itemBuilder: (context, index) {
-            // Decide if this item is active:
-            //  - The first item (index 0) is always visible
-            //  - Any other item is visible only if the previous item is found
+            // The first item (index 0) is always active;
+            // any other item is active only if the previous one is found.
             final bool isActive = (index == 0) || items[index - 1].found;
 
             return AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
               opacity: isActive ? 1.0 : 0.0,
-              // Also ignore taps when inactive
               child: AbsorbPointer(
                 absorbing: !isActive,
                 child: Stack(
                   children: [
                     _buildItemTile(items[index], isActive),
-                    // Check mark overlay
+                    // Check mark overlay now uses LSU Gold.
                     Positioned(
                       top: 8,
                       right: 8,
                       child: AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
                         opacity: items[index].found ? 1.0 : 0.0,
-                        child: const Icon(
+                        child: Icon(
                           Icons.check_circle,
                           size: 30,
-                          color: Colors.green,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),
